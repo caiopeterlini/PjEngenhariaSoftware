@@ -1,0 +1,6 @@
+@QueueMessage.Consumer_HostAddress = http://localhost:5171
+
+GET {{QueueMessage.Consumer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
