@@ -54,7 +54,6 @@ namespace WebApi.Infrastructure.Repository
 
                     await channel.BasicPublishAsync(exchange: string.Empty, routingKey: queueName, body: Encoding.UTF8.GetBytes(body));
 
-                    return queueok.QueueName;
                 }
                 catch (Exception ex)
                 {
