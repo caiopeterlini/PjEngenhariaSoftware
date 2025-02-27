@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using WebApi.Domain;
 using WebApi.Infrastructure.Contracts.MessageQueue;
+using WebApi.Infrastructure.Contracts.Service;
 
 namespace WebApi.Controllers
 {
@@ -11,23 +12,24 @@ namespace WebApi.Controllers
     public class OrderController : Controller
     {
         private ILogger<OrderController> _logger;
-        private IMessageQueueService _queueService;
+        private IOrderService _orderService;
         private string _QueueName;
 
-        public OrderController(ILogger<OrderController> logger, IMessageQueueService queueService)
+        public OrderController(ILogger<OrderController> logger, IOrderService orderService)
         {
             _logger = logger;
-            _queueService = queueService;
+            _orderService = orderService;
             _QueueName = "order";
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> InsertOrderAsync(Order order)
+        public async Task<IActionResult> InsertOrderAsync(Orders order)
         {
             var responseQueue = "";
             try
             {
-                responseQueue =  await _queueService.OpenChannelPublishQueue(_QueueName, JsonSerializer.Serialize(order).ToString());
+                 await _orderService.InsertOrder(_QueueName, JsonSerializer.Serialize(order).ToString());
             }
             catch (Exception ex)
             {
@@ -35,6 +37,52 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
            return Accepted(responseQueue);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Orders>>> GetAllOrders()
+        {
+            try
+            {
+                var orders = await _orderService.GetAllOrders();
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Orders>> GetOrderById(int id)
+        {
+            try
+            {
+                var order = await _orderService.GetOrderById(id);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            try
+            {
+                await _orderService.DeleteOrderAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 }
