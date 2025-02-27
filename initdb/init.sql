@@ -10,6 +10,13 @@ CREATE TABLE client (
     PRIMARY KEY (cli_id)
 );
 
+INSERT INTO client (cli_cpf, cli_name)
+VALUES ('12345678901', 'João Silva');
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 CREATE TABLE product (
     id int NOT NULL AUTO_INCREMENT,
     p_name varchar(250) NOT NULL,

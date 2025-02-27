@@ -5,8 +5,10 @@ services:
     environment:
       MYSQL_DATABASE: "mydb"
       MYSQL_ROOT_PASSWORD: 'admin'
+    ports:
+      - '3306:3306'
     volumes:
-        - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
   rabt:
     image: rabbitmq:management
     container_name: rabbitmq
