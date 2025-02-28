@@ -12,6 +12,6 @@ Passo necessario para Executar projeto.
 - Executar na raiz do projeto : docker-compose up  --build -d (Rabbitmq e mysql)
 - Executar na pasta \BackEnd\WebApi : dotnet run   
 - Executar na pasta \Microservice\QueueMessage\QueueMessage.Consumer : dotnet run
-- Executar \FrontEnd : npm i
-- Executar \FrontEnd : ng serve
+- Executar \FrontEnd\app : npm i
+- Executar \FrontEnd\app : ng serve
 
