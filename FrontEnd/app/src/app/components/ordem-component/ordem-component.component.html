@@ -1,0 +1,86 @@
+<div  style="text-align: center;margin-bottom: 2em;">
+  <h5>Cadastro de Ordem</h5>
+</div>
+  <div style="text-align: center;">
+  <form  [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <div>
+      <mat-form-field>
+        <label for="cliente">Cliente: </label>
+        <select formControlName="clienteSelecionado" matNativeControl >
+          <option value="" selected></option>
+          @for (cliente of clientes; track cliente) {
+            <option [value]="cliente.id">{{cliente.Name}}</option>
+          }
+        </select>
+      </mat-form-field>
+    </div>
+
+
+
+      <div >
+        <table *ngIf="produtos != null"  class="table table-striped table-hover tabela">
+          <thead class="thead-dark">
+            <tr >
+              <th scope="col">Id</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Preço</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let produto of produtos" >
+              <td>{{ produto.id }}</td>
+              <td>{{ produto.Name }}</td>
+              <td>{{ produto.Price }}</td>
+              <td >
+                <mat-icon (click)="RemoverProduto(produto)">remove</mat-icon>
+                <mat-icon (click)="AdicionarProduto(produto)">add</mat-icon>
+             </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div >
+        <table *ngIf="ItensOrderSelecionados.length != 0"  class="table table-striped table-hover tabela">
+          <thead class="thead-dark">
+            <tr >
+              <th scope="col">Nome</th>
+              <th scope="col">Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let produto of ItensOrderSelecionados" >
+              <td>{{ produto.Produto?.Name }}</td>
+              <td>{{ produto.Quantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="ItensOrderSelecionados.length > 0" class="total">
+          <h4>Total: {{ calcularTotalPreco() | currency }}</h4>
+        </div>
+      </div>
+
+
+
+
+
+    <div  style="text-align: center; margin-top: 2em;">
+       <input  type="button"  type="submit" value="Finalizar Ordem"/>
+     </div>
+
+</form>
+
+</div>
+
+
+
+
+
+
+
+
+
+

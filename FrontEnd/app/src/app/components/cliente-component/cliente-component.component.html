@@ -1,0 +1,63 @@
+<div  style="text-align: center;margin-bottom: 2em;">
+  <h5>Cadastro de Cliente</h5>
+</div>
+  <div style="text-align: center;">
+  <form  [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <div>
+
+    <mat-form-field >
+      <label for="nome">Nome: </label>
+      <input matInput  formControlName="nome" type="text" required>
+    </mat-form-field>
+  </div>
+    <div>
+
+    <mat-form-field >
+      <label for="cpf">Cpf: </label>
+      <input matInput  formControlName="cpf" type="text" required>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="!clienteSelecionado" style="text-align: center;">
+      <input  type="button"  type="submit" value="Salvar"/>
+    </div>
+    <div *ngIf="clienteSelecionado" style="text-align: center;">
+      <input style="margin-right: 1em;"   type="button"  type="submit" value="Editar" />
+      <input   type="button"  value="Cancelar" (click)="CancelarEdicao()"/>
+    </div>
+
+
+
+  </form>
+</div>
+<div>
+
+  <table *ngIf="clientes != null"  class="table table-striped table-hover tabela">
+    <thead class="thead-dark">
+      <tr >
+        <th scope="col">Id</th>
+        <th scope="col">CPF</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes"  [class.selected]="cliente === clienteSelecionado">
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.Cpf }}</td>
+        <td>{{ cliente.Name }}</td>
+        <td ><mat-icon (click)="SelecionarCliente(cliente)">create</mat-icon><mat-icon (click)="ExcluirCliente(cliente)">delete</mat-icon></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+

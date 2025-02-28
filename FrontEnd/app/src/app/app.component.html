@@ -1,0 +1,23 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <div class="menu">
+      <button mat-raised-button color="primary" class="menu-button" routerLink="/cadastro-cliente">
+        <mat-icon class="me-2">person_add</mat-icon> Cadastro Cliente
+      </button>
+
+      <button mat-raised-button color="accent" class="menu-button" routerLink="/cadastro-produto">
+        <mat-icon class="me-2">inventory_2</mat-icon> Cadastro Produto
+      </button>
+
+      <button mat-raised-button color="accent" class="menu-button" routerLink="/cadastro-ordem">
+        <mat-icon class="me-2">shopping_cart</mat-icon> Enviar Ordem
+      </button>
+    </div>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="menu" (click)="drawer.toggle()"></mat-icon>
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-drawer-container>
