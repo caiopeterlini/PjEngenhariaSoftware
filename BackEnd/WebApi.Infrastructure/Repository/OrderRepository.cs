@@ -28,11 +28,13 @@ namespace WebApi.Infrastructure.Repository
             }
         }
 
-        public async Task<Orders?> GetOrderById(int id)
+        public async Task<List<Orders>> GetOrderById(int id)
         {
             try
             {
-                return await _mySqlDbContext.orders.FindAsync(id);
+                var query = await(from order in _mySqlDbContext.orders
+                            where order.ClientId == id select order).ToListAsync();
+                return query;
             }
             catch (Exception ex)
             {

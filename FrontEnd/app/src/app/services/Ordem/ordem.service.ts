@@ -15,6 +15,10 @@ export class OrdemSevice {
     return this.httpRequest.get<Ordem[]>(this.configUrl + "Order");
   }
 
+  getOrdemsbyClientId(id:number) {
+    return this.httpRequest.get<Ordem[]>(this.configUrl + "Order?id="+ id);
+  }
+
   postOrdems(Ordem:Ordem){
     const headers = new HttpHeaders().set('content-type', 'application/json');
     return this.httpRequest.post<any>(this.configUrl + "Order", JSON.stringify(Ordem), {headers: headers} );

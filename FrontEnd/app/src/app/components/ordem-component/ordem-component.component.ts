@@ -158,7 +158,6 @@ CarregarordemsCadastrados() {
     ordemPost.ClientId =  +this.checkoutForm.get('clienteSelecionado').value;
     ordemPost.TotalPrice =  this.total
     ordemPost.ItensP =  this.ItensOrderSelecionados
-debugger;
 
       this._OrdemSevice.postOrdems(ordemPost
       ).subscribe((data: any) => {

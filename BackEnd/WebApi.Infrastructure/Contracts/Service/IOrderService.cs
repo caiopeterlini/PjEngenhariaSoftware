@@ -10,7 +10,7 @@ namespace WebApi.Infrastructure.Contracts.Service
     public interface IOrderService
     {
         Task<List<Orders>> GetAllOrders();
-        Task<Orders> GetOrderById(int id);
+        Task<List<Orders>> GetOrderById(int id);
         Task InsertOrder(string queueName, string body);
         Task DeleteOrderAsync(int id);
     }

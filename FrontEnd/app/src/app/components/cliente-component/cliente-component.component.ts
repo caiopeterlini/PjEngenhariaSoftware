@@ -86,7 +86,6 @@ export class ClienteComponent implements OnInit {
     clientePost.Cpf =  this.checkoutForm.get('cpf').value;
     clientePost.Name =  this.checkoutForm.get('nome').value;
 
-    debugger;
       if(this.clienteSelecionado){
         clientePost.id = this.clienteSelecionado.id
         this._ClienteSevice.putClientes(clientePost

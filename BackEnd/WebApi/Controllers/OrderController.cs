@@ -40,7 +40,23 @@ namespace WebApi.Controllers
            return Accepted(responseQueue);
         }
 
-        [HttpGet]
+
+        [HttpGet("GetOrderById")]
+        public async Task<ActionResult<List<Orders>?>> GetOrderById([FromBody] int id)
+        {
+            try
+            {
+                var orders = await _orderService.GetOrderById(id);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+
+    [HttpGet]
         public async Task<ActionResult<List<Orders>>> GetAllOrders()
         {
             try

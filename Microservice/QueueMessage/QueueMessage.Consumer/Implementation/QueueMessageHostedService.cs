@@ -15,7 +15,7 @@ namespace QueueMessage.Consumer.Implementation
         public Task StartAsync(CancellationToken cancellationToken)
         {
             
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
             return Task.CompletedTask;
         }
 
