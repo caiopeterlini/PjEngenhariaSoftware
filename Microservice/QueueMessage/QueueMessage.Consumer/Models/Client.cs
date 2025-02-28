@@ -10,7 +10,7 @@ namespace QueueMessage.Consumer.Models
         [Required]
         [MaxLength(11)]
         public int Cpf { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
 
     }
 }

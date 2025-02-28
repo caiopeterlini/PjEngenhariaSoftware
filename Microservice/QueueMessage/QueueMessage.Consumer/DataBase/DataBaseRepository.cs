@@ -19,12 +19,12 @@ namespace QueueMessage.Consumer.DataBase
                 {
                     using var connection = new MySqlConnection("Server=localhost;Database=mydb;User=root;Password=admin;");
                     connection.Open();
-                    string queryinsertOrder = $"INSERT INTO order (id,cpf_id,total_price ) VALUES ({requestOrder.OrderId},{requestOrder.ClientId} );";
+                    string queryinsertOrder = $"INSERT INTO orders (id,cpf_id,total_price ) VALUES ({requestOrder.Id},{requestOrder.ClientId}, {requestOrder.TotalPrice} );";
                     string queryinsertItemOrder = "";
 
-                    foreach (Item item in requestOrder.Itens)
+                    foreach (var item in requestOrder.ItensP)
                     {
-                        queryinsertItemOrder += $" INSERT INTO item_order (order_id,product_id,quantity ) VALUES ({requestOrder.OrderId},{item.ProductId},{item.Quantity} );";
+                        queryinsertItemOrder += $" INSERT INTO item_order (order_id,product_id,quantity ) VALUES ({requestOrder.Id},{item.Produto.Id},{item.Quantity} );";
                     }
 
                     retorno = await connection.ExecuteAsync(queryinsertOrder);
