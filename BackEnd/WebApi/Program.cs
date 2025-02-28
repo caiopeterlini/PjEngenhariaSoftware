@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using QueueMessage.Consumer.DataBase;
 using WebApi.Infrastructure.Contracts;
@@ -19,6 +20,13 @@ namespace WebApi
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
 
             builder.Services.AddDbContext<MySqlDbContext>(options =>
              options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnection")));
@@ -38,7 +46,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
-
+            app.UseCors("AllowSpecificOrigin");
             app.MapControllers();
 
             app.Run();
@@ -48,6 +56,16 @@ namespace WebApi
         {
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+            builder.Services.AddScoped<IItensOrderService, ItensOrderService>();
+            builder.Services.AddScoped<IItensOrderRepository, ItensOrderRepository>();
+
             builder.Services.AddSingleton<IMessageQueueService, MessageQueueService>();
             builder.Services.AddSingleton<IMessageQueueRepository, MessageQueueRepository>();
         }

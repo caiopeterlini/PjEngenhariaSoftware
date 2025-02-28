@@ -61,16 +61,11 @@
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
             try
             {
-                if (id != product.Id)
-                {
-                    return BadRequest();
-                }
-
                 await _productService.UpdateProduct(product);
                 return NoContent();
             }
@@ -80,8 +75,8 @@
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct([FromQuery]int id)
         {
             try
             {

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using WebApi.Domain;
+using WebApi.Domain.Request;
 using WebApi.Infrastructure.Contracts.MessageQueue;
 using WebApi.Infrastructure.Contracts.Service;
 
@@ -24,7 +25,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> InsertOrderAsync(Orders order)
+        public async Task<IActionResult> InsertOrderAsync([FromBody] OrdersRequest order)
         {
             var responseQueue = "";
             try
@@ -53,36 +54,5 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Orders>> GetOrderById(int id)
-        {
-            try
-            {
-                var order = await _orderService.GetOrderById(id);
-                if (order == null)
-                {
-                    return NotFound();
-                }
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
-        {
-            try
-            {
-                await _orderService.DeleteOrderAsync(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
     }
 }

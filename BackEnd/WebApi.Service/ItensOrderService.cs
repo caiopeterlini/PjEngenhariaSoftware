@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApi.Domain;
 using WebApi.Infrastructure.Contracts.Repository;
+using WebApi.Infrastructure.Contracts.Service;
 
 namespace WebApi.Service
 {
-    public class ItensOrderService
+    public class ItensOrderService : IItensOrderService
     {
         private readonly IItensOrderRepository _itensOrderRepository;
 

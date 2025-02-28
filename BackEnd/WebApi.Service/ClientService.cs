@@ -31,19 +31,54 @@ namespace WebApi.Service
             }
         }
 
-        public Task<Client> GetClientById(int id)
+        public async Task<Client> GetClientById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _clientRepository.GetClientById(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error in {nameof(GetClientById)}: {ex.Message}", ex);
+            }
         }
 
-        public Task<Client> InsertClient(int id, Client client)
+     
+        public async Task<Client> InsertClient(Client client)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _clientRepository.InsertClient(client);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error in {nameof(InsertClient)}: {ex.Message}", ex);
+            }
         }
 
-        public Task<Client> UpdateClient(int id, Client client)
+        public async Task UpdateClient(Client client)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _clientRepository.UpdateClient(client);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error in {nameof(UpdateClient)}: {ex.Message}", ex);
+            }
         }
+
+        public async Task DeleteClientAsync(int id)
+        {
+            try
+            {
+                await _clientRepository.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error in {nameof(DeleteClientAsync)}: {ex.Message}", ex);
+            }
+        }
+
     }
 }

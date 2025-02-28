@@ -12,7 +12,7 @@ namespace WebApi.Domain
         [Required]
         [MaxLength(11)]
         [Column("cli_cpf")]
-        public Int64 Cpf { get; set; }
+        public string? Cpf { get; set; }
         [Column("cli_name")]
         public string? Name { get; set; }
 
