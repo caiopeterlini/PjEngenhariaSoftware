@@ -30,6 +30,10 @@ export class OrdemComponent implements OnInit {
   private _OrdemSevice: OrdemSevice;
   private _ClienteSevice: ClienteSevice;
   private _ProdutoSevice :  ProdutoSevice;
+  showNotification: boolean = false;
+  showNotificationWar: boolean = false;
+  textoNotificacao: string = "";
+
 
   public ordens: Ordem[] = [];
   public clientes: cliente[] = [];
@@ -147,22 +151,43 @@ CarregarordemsCadastrados() {
 }
 //#endregion
 
+show(): void {
+  this.showNotification = true;
+  setTimeout(() => {
+    this.showNotification = false;
+  }, 3000);
+}
+
+
+showWarning(): void {
+  this.showNotificationWar = true;
+  setTimeout(() => {
+    this.showNotificationWar = false;
+  }, 3000);
+}
 
   onSubmit() {
 
 
+    if(this.ItensOrderSelecionados.length > 0){
 
-    var ordemPost = new Ordem();
+      var ordemPost = new Ordem();
 
-    ordemPost.id  = this.ordens.length + 1
-    ordemPost.ClientId =  +this.checkoutForm.get('clienteSelecionado').value;
-    ordemPost.TotalPrice =  this.total
-    ordemPost.ItensP =  this.ItensOrderSelecionados
-    console.log(ordemPost);
+      ordemPost.id  = this.ordens.length + 1
+      ordemPost.ClientId =  +this.checkoutForm.get('clienteSelecionado').value;
+      ordemPost.TotalPrice =  this.total
+      ordemPost.ItensP =  this.ItensOrderSelecionados
+      console.log(ordemPost);
       this._OrdemSevice.postOrdems(ordemPost
       ).subscribe((data: any) => {
         this.CarregarordemsCadastrados();
+        this.textoNotificacao = "Ordem Enviada!"
+        this.show();
       });
+    }else{
+      this.textoNotificacao = "Algum produto deve ser adicionado"
+      this.showWarning();
+    }
 
   }
 }

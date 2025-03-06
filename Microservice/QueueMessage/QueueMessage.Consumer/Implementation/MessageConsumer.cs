@@ -44,15 +44,18 @@ namespace QueueMessage.Consumer.Implementation
 
                     var body = ea.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine($"Consumer body {message} : {DateTime.Now}");
 
                     try
                     {
 
                         RequestOrder? requestOrder = JsonSerializer.Deserialize<RequestOrder>(message);
+                    Console.WriteLine($"Consumer body {requestOrder} : {DateTime.Now}");
                     var mysql = new DataBaseRepository();
-                    await mysql.PostOrderDatabase(requestOrder);
+                    var consumo = await mysql.PostOrderDatabase(requestOrder);
+                        if (consumo)
+                        {
                     await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
+                        }
                     }
                     catch (Exception ex)
                     {

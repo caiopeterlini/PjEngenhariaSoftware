@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+.notification {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 5px;
+}
+
+.notificationWar {
+  background-color: #af4c4c;
+  color: white;
+  padding: 15px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 5px;
+}

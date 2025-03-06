@@ -1,12 +1,10 @@
-﻿using QueueMessage.Consumer.Models;
-using System.Text.Json.Serialization;
-
+﻿
 namespace QueueMessage.Consumer.Request
 {
     public class RequestOrder
     {
-        public int Id { get; set; }
         public int ClientId { get; set; }
+        public string? CodigoOrder { get; set; }
         public decimal TotalPrice { get; set; }
         public List<ItemOrdem>? ItensP { get; set; }
     }

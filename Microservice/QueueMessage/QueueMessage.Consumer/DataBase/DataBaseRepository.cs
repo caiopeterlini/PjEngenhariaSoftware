@@ -14,11 +14,8 @@ namespace QueueMessage.Consumer.DataBase
         {
         }
 
-        public async Task PostOrderDatabase( RequestOrder? requestOrder)
+        public async Task<bool> PostOrderDatabase(RequestOrder? requestOrder)
         {
-            Console.WriteLine($"PostOrderDatabase : {DateTime.Now}");
-            int? latestOrderId = null;
-            var retorno = 0;
                     using var connection = new MySqlConnection("Server=localhost;Database=mydb;User=root;Password=admin;");
             try
             {
@@ -27,34 +24,25 @@ namespace QueueMessage.Consumer.DataBase
                     connection.Open();
                     using var transaction = connection.BeginTransaction();
 
-
-
-                    var query = $"select id from orders ORDER BY id DESC LIMIT 1;";
-                    var command = new MySqlCommand(query, connection);
-                    var reader = await command.ExecuteReaderAsync();
-
-                    // Leia o id
-                    if (await reader.ReadAsync())
-                    {
-                        latestOrderId = reader.GetInt32("id") + 1;
-                    }
-
-                    reader.Close();
-                    string queryinsertOrder = $"INSERT INTO orders (id,cpf_id,total_price ) VALUES ({latestOrderId},{requestOrder.ClientId}, {requestOrder.TotalPrice} );";
-                    connection.Execute(queryinsertOrder, transaction);
-                    transaction.Commit();
+                    string queryinsertOrder = $"INSERT INTO orders (codigo_ordem,cpf_id,total_price ) VALUES ( '{requestOrder.CodigoOrder}',{requestOrder.ClientId}, {requestOrder.TotalPrice} );";
+                    Console.WriteLine($"Consumer Insert {queryinsertOrder} : {DateTime.Now}");
+                    await connection.ExecuteAsync(queryinsertOrder, transaction);
 
                     string queryinsertItemOrder = "";
 
                     foreach (var item in requestOrder.ItensP)
                     {
-                        queryinsertItemOrder += $" INSERT INTO item_order (order_id,product_id,quantity ) VALUES ({latestOrderId},{item.Produto.Id},{item.Quantity} );";
+                        queryinsertItemOrder += $" INSERT INTO item_order (order_cod,product_id,quantity ) VALUES ('{requestOrder.CodigoOrder}',{item.Produto.Id},{item.Quantity} );";
                     }
-                    Console.WriteLine($"Consumer Insert {queryinsertOrder} : {DateTime.Now}");
                     Console.WriteLine($"Consumer Insert {queryinsertItemOrder} : {DateTime.Now}");
-                    await Task.Delay(40000);
-                     await connection.ExecuteAsync(queryinsertItemOrder, transaction);
+                    var commit = await connection.ExecuteAsync(queryinsertItemOrder, transaction);
                      await transaction.CommitAsync();
+                    connection.Close();
+
+                    if (commit != null)
+                    {
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -65,6 +53,7 @@ namespace QueueMessage.Consumer.DataBase
                     connection.Close();
                 }
             }
+                    return false;
 
         }
 
@@ -77,3 +66,4 @@ namespace QueueMessage.Consumer.DataBase
 
     }
 }
+

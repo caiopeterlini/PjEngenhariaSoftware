@@ -1,12 +1,17 @@
-﻿using System;
+﻿using Mysqlx.Crud;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WebApi.Domain;
+using WebApi.Domain.Request;
 using WebApi.Infrastructure.Contracts.Repository;
 using WebApi.Infrastructure.Contracts.Service;
 using WebApi.Infrastructure.Repository;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 
 namespace WebApi.Service
 {
@@ -14,6 +19,8 @@ namespace WebApi.Service
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IItensOrderRepository _itensOrderRepository;
+        private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private static readonly Random random = new Random();
 
         public OrderService(IOrderRepository orderRepository, IItensOrderRepository itensOrderRepository)
         {
@@ -47,11 +54,12 @@ namespace WebApi.Service
         }
 
 
-        public async Task InsertOrder(string queueName, string body)
+        public async Task InsertOrder(string queueName, OrdersRequest order)
         {
             try
             {
-                await _orderRepository.InsertOrderByQueue(queueName, body);
+                order.CodigoOrder = GenerateCodOrdem();
+                await _orderRepository.InsertOrderByQueue(queueName, JsonSerializer.Serialize(order).ToString());
             }
             catch (Exception ex)
             {
@@ -59,6 +67,19 @@ namespace WebApi.Service
                 throw new Exception(ex.Message);
             }
 
+        }
+
+        private string GenerateCodOrdem()
+        {
+            var length = 6;
+                StringBuilder result = new StringBuilder(length);
+
+                for (int i = 0; i < length; i++)
+                {
+                    result.Append(chars[random.Next(chars.Length)]);
+                }
+
+                return result.ToString();
         }
 
         public async Task DeleteOrderAsync(int id)

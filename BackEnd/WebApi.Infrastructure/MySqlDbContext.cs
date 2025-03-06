@@ -45,6 +45,7 @@ namespace QueueMessage.Consumer.DataBase
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.CodigoOrdem);
                 entity.Property(e => e.ClientId);
                 entity.Property(e => e.TotalPrice).IsRequired().HasColumnType("decimal(10,2)");
 

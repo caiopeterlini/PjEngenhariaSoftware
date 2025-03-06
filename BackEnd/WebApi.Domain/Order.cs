@@ -6,6 +6,8 @@ namespace WebApi.Domain
     {
         [Column("id")]
         public int Id { get; set; }
+        [Column("codigo_ordem")]
+        public int CodigoOrdem { get; set; }
         [Column("cpf_id")]
         public int ClientId { get; set; }
         [Column("total_price")]

@@ -10,7 +10,7 @@ namespace WebApi.Domain.Request
     public class OrdersRequest
     {
 
-        public int Id { get; set; }
+        public string? CodigoOrder { get; set; }
         public int ClientId { get; set; }
         public decimal TotalPrice { get; set; }
         public List<Itens>? ItensP { get; set; }

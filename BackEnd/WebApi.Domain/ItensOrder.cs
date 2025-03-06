@@ -6,8 +6,8 @@ namespace WebApi.Domain
     {
         [Column("id")]
         public int Id { get; set; }
-        [Column("order_id")]
-        public int OrderId { get; set; }
+        [Column("order_cod")]
+        public int OrderCod { get; set; }
         [Column("product_id")]
         public int ProductId { get; set; }
         [Column("quantity")]

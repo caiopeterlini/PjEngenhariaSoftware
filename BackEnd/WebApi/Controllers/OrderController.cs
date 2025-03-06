@@ -30,7 +30,7 @@ namespace WebApi.Controllers
             var responseQueue = "";
             try
             {
-                 await _orderService.InsertOrder(_QueueName, JsonSerializer.Serialize(order).ToString());
+                 await _orderService.InsertOrder(_QueueName, order);
             }
             catch (Exception ex)
             {

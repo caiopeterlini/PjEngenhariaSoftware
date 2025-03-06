@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-cliente-component',
@@ -23,9 +24,14 @@ export class ClienteComponent implements OnInit {
   private _ClienteSevice :  ClienteSevice;
   public clientes : cliente[] = [];
   public clienteSelecionado?: cliente;
+  showNotification: boolean = false;
+  textoNotificacao: string = "";
 
-
-  constructor( httpclient : HttpClient, private fb: FormBuilder) {
+  constructor(
+    httpclient : HttpClient,
+     private fb: FormBuilder
+     ,private toastr: ToastrService
+     ) {
     this._ClienteSevice = new ClienteSevice(httpclient);
   }
 
@@ -49,11 +55,19 @@ export class ClienteComponent implements OnInit {
           cli.Name = p.name;
           this.clientes?.push(cli);
         })
+        console.log("Clientes Carregados!" );
+
       },
       error: (err) => {
         console.error('Erro: ' + err);
       }
     });
+  }
+  show(): void {
+    this.showNotification = true;
+    setTimeout(() => {
+      this.showNotification = false;
+    }, 3000);
   }
 
   SelecionarCliente(cliente: cliente) {
